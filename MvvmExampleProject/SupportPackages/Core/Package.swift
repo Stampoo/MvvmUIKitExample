@@ -14,10 +14,15 @@ let package = Package(
             name: "EventTransceiver",
             url: "https://github.com/Stampoo/EventTransceiver.git",
             branch: "main"
+        ),
+        .package(
+            name: "ReactiveDataDisplayManager",
+            url: "https://github.com/surfstudio/ReactiveDataDisplayManager.git",
+            revision: "7.2.1"
         )
     ],
     targets: [
-        .target(name: "Core", dependencies: ["EventTransceiver"]),
+        .target(name: "Core", dependencies: ["EventTransceiver", "ReactiveDataDisplayManager"]),
         .testTarget(name: "CoreTests", dependencies: ["Core"]),
     ]
 )

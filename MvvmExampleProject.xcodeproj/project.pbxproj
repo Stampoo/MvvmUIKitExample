@@ -13,7 +13,6 @@
 		34D85B56281D3FB800EBD395 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 34D85B54281D3FB800EBD395 /* LaunchScreen.storyboard */; };
 		34D85B65281D4AE900EBD395 /* MvvmExampleProjectTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34D85B64281D4AE900EBD395 /* MvvmExampleProjectTests.swift */; };
 		34D85B6F281D4E4100EBD395 /* Core in Frameworks */ = {isa = PBXBuildFile; productRef = 34D85B6E281D4E4100EBD395 /* Core */; };
-		34D85B72281D505500EBD395 /* ReactiveDataDisplayManager in Frameworks */ = {isa = PBXBuildFile; productRef = 34D85B71281D505500EBD395 /* ReactiveDataDisplayManager */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -43,7 +42,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				34D85B72281D505500EBD395 /* ReactiveDataDisplayManager in Frameworks */,
 				34D85B6F281D4E4100EBD395 /* Core in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -139,7 +137,6 @@
 			name = MvvmExampleProject;
 			packageProductDependencies = (
 				34D85B6E281D4E4100EBD395 /* Core */,
-				34D85B71281D505500EBD395 /* ReactiveDataDisplayManager */,
 			);
 			productName = MvvmExampleProject;
 			productReference = 34D85B46281D3FB800EBD395 /* MvvmExampleProject.app */;
@@ -192,7 +189,6 @@
 			);
 			mainGroup = 34D85B3D281D3FB800EBD395;
 			packageReferences = (
-				34D85B70281D505500EBD395 /* XCRemoteSwiftPackageReference "ReactiveDataDisplayManager" */,
 			);
 			productRefGroup = 34D85B47281D3FB800EBD395 /* Products */;
 			projectDirPath = "";
@@ -503,26 +499,10 @@
 		};
 /* End XCConfigurationList section */
 
-/* Begin XCRemoteSwiftPackageReference section */
-		34D85B70281D505500EBD395 /* XCRemoteSwiftPackageReference "ReactiveDataDisplayManager" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "git@github.com:surfstudio/ReactiveDataDisplayManager.git";
-			requirement = {
-				kind = exactVersion;
-				version = 7.2.1;
-			};
-		};
-/* End XCRemoteSwiftPackageReference section */
-
 /* Begin XCSwiftPackageProductDependency section */
 		34D85B6E281D4E4100EBD395 /* Core */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = Core;
-		};
-		34D85B71281D505500EBD395 /* ReactiveDataDisplayManager */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 34D85B70281D505500EBD395 /* XCRemoteSwiftPackageReference "ReactiveDataDisplayManager" */;
-			productName = ReactiveDataDisplayManager;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
