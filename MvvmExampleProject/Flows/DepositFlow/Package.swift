@@ -10,9 +10,10 @@ let package = Package(
         .library(name: "DepositFlow", targets: ["DepositFlow"])
     ],
     dependencies: [
+        .package(path: "./Flows/SupportPackages/Core")
     ],
     targets: [
-        .target(name: "DepositFlow", dependencies: []),
+        .target(name: "DepositFlow", dependencies: ["Core"]),
         .testTarget(name: "DepositFlowTests", dependencies: ["DepositFlow"]),
     ]
 )
