@@ -1,0 +1,33 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - '**'
+    types: [ opened, edited, synchronize ]
+
+jobs:
+  build:
+
+    runs-on: macos-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Build
+      run: |
+        sudo xcodebuild -scheme MvvmExampleProject\
+          -project MvvmExampleProject.xcodeproj\
+          -derivedDataPath ./buildData\
+          -destination "platform=iOS Simulator,name=iPhone 13,OS=15.2"\
+          build-for-testing
+          
+    - name: Tests
+      run: |
+        sudo xcodebuild -scheme MvvmExampleProject\
+          -project MvvmExampleProject.xcodeproj\
+          -destination "platform=iOS Simulator,name=iPhone 13,OS=15.2"\
+          -derivedDataPath ./buildData\
+          test-without-building
