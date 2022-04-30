@@ -12,6 +12,7 @@
 		34D85B53281D3FB800EBD395 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 34D85B52281D3FB800EBD395 /* Assets.xcassets */; };
 		34D85B56281D3FB800EBD395 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 34D85B54281D3FB800EBD395 /* LaunchScreen.storyboard */; };
 		34D85B65281D4AE900EBD395 /* MvvmExampleProjectTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34D85B64281D4AE900EBD395 /* MvvmExampleProjectTests.swift */; };
+		34D85B6F281D4E4100EBD395 /* Core in Frameworks */ = {isa = PBXBuildFile; productRef = 34D85B6E281D4E4100EBD395 /* Core */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -33,6 +34,7 @@
 		34D85B57281D3FB800EBD395 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		34D85B62281D4AE900EBD395 /* MvvmExampleProjectTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MvvmExampleProjectTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		34D85B64281D4AE900EBD395 /* MvvmExampleProjectTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MvvmExampleProjectTests.swift; sourceTree = "<group>"; };
+		34D85B6C281D4CED00EBD395 /* Core */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = Core; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -40,6 +42,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				34D85B6F281D4E4100EBD395 /* Core in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -59,6 +62,7 @@
 				34D85B48281D3FB800EBD395 /* MvvmExampleProject */,
 				34D85B63281D4AE900EBD395 /* MvvmExampleProjectTests */,
 				34D85B47281D3FB800EBD395 /* Products */,
+				34D85B6D281D4E4100EBD395 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -74,6 +78,7 @@
 		34D85B48281D3FB800EBD395 /* MvvmExampleProject */ = {
 			isa = PBXGroup;
 			children = (
+				34D85B6B281D4C0500EBD395 /* SupportPackages */,
 				34D85B5D281D41DB00EBD395 /* Application */,
 			);
 			path = MvvmExampleProject;
@@ -99,6 +104,21 @@
 			path = MvvmExampleProjectTests;
 			sourceTree = "<group>";
 		};
+		34D85B6B281D4C0500EBD395 /* SupportPackages */ = {
+			isa = PBXGroup;
+			children = (
+				34D85B6C281D4CED00EBD395 /* Core */,
+			);
+			path = SupportPackages;
+			sourceTree = "<group>";
+		};
+		34D85B6D281D4E4100EBD395 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -115,6 +135,9 @@
 			dependencies = (
 			);
 			name = MvvmExampleProject;
+			packageProductDependencies = (
+				34D85B6E281D4E4100EBD395 /* Core */,
+			);
 			productName = MvvmExampleProject;
 			productReference = 34D85B46281D3FB800EBD395 /* MvvmExampleProject.app */;
 			productType = "com.apple.product-type.application";
@@ -473,6 +496,13 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		34D85B6E281D4E4100EBD395 /* Core */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = Core;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 34D85B3E281D3FB800EBD395 /* Project object */;
 }
