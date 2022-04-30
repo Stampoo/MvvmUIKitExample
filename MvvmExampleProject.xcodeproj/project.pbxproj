@@ -13,6 +13,7 @@
 		34D85B56281D3FB800EBD395 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 34D85B54281D3FB800EBD395 /* LaunchScreen.storyboard */; };
 		34D85B65281D4AE900EBD395 /* MvvmExampleProjectTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34D85B64281D4AE900EBD395 /* MvvmExampleProjectTests.swift */; };
 		34D85B6F281D4E4100EBD395 /* Core in Frameworks */ = {isa = PBXBuildFile; productRef = 34D85B6E281D4E4100EBD395 /* Core */; };
+		34D85B7F281D814900EBD395 /* DepositFlow in Frameworks */ = {isa = PBXBuildFile; productRef = 34D85B7E281D814900EBD395 /* DepositFlow */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -35,6 +36,7 @@
 		34D85B62281D4AE900EBD395 /* MvvmExampleProjectTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MvvmExampleProjectTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		34D85B64281D4AE900EBD395 /* MvvmExampleProjectTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MvvmExampleProjectTests.swift; sourceTree = "<group>"; };
 		34D85B6C281D4CED00EBD395 /* Core */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = Core; sourceTree = "<group>"; };
+		34D85B7D281D805C00EBD395 /* DepositFlow */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = DepositFlow; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -43,6 +45,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				34D85B6F281D4E4100EBD395 /* Core in Frameworks */,
+				34D85B7F281D814900EBD395 /* DepositFlow in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -78,6 +81,7 @@
 		34D85B48281D3FB800EBD395 /* MvvmExampleProject */ = {
 			isa = PBXGroup;
 			children = (
+				34D85B7C281D7FED00EBD395 /* Flows */,
 				34D85B6B281D4C0500EBD395 /* SupportPackages */,
 				34D85B5D281D41DB00EBD395 /* Application */,
 			);
@@ -119,6 +123,14 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		34D85B7C281D7FED00EBD395 /* Flows */ = {
+			isa = PBXGroup;
+			children = (
+				34D85B7D281D805C00EBD395 /* DepositFlow */,
+			);
+			path = Flows;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -137,6 +149,7 @@
 			name = MvvmExampleProject;
 			packageProductDependencies = (
 				34D85B6E281D4E4100EBD395 /* Core */,
+				34D85B7E281D814900EBD395 /* DepositFlow */,
 			);
 			productName = MvvmExampleProject;
 			productReference = 34D85B46281D3FB800EBD395 /* MvvmExampleProject.app */;
@@ -503,6 +516,10 @@
 		34D85B6E281D4E4100EBD395 /* Core */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = Core;
+		};
+		34D85B7E281D814900EBD395 /* DepositFlow */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = DepositFlow;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
