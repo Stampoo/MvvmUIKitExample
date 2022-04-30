@@ -12,7 +12,7 @@ let package = Package(
     dependencies: [
         .package(
             name: "EventTransceiver",
-            url: "git@github.com:Stampoo/EventTransceiver.git",
+            url: "https://github.com/Stampoo/EventTransceiver.git",
             branch: "main"
         )
     ],
