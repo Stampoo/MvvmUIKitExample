@@ -12,3 +12,11 @@ public protocol RouterPresentableElement {
     var presentableController: UIViewController { get }
 
 }
+
+extension UIViewController: RouterPresentableElement {
+
+    public var presentableController: UIViewController {
+        self
+    }
+
+}

@@ -18,6 +18,7 @@ public protocol Router {
     func setNavigationControllerRootModule(_ module: RouterPresentableElement,
                                                   isAnimated: Bool,
                                                   isNeedHideBar: Bool)
+    func setAsRoot(module: RouterPresentableElement)
 
     init()
 

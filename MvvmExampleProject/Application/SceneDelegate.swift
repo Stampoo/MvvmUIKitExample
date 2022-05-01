@@ -6,10 +6,12 @@
 //
 
 import UIKit
+import DepositFlow
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
     var window: UIWindow?
+    let depositCoordinator = DepositCoordinator()
 
     func scene(_ scene: UIScene,
                willConnectTo session: UISceneSession,
@@ -20,6 +22,18 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         window = UIWindow(windowScene: windowScene)
         window?.backgroundColor = .white
         window?.makeKeyAndVisible()
+
+        startRootCoordinator()
+    }
+
+}
+
+// MARK: - Private Methods
+
+private extension SceneDelegate {
+
+    func startRootCoordinator() {
+        depositCoordinator.start()
     }
 
 }

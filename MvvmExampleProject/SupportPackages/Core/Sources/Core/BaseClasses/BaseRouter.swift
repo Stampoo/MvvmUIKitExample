@@ -42,6 +42,10 @@ public final class BaseRouter: Router {
         navigationController?.setViewControllers([module.presentableController], animated: isAnimated)
     }
 
+    public func setAsRoot(module: RouterPresentableElement) {
+        currentDisplayedWindow?.rootViewController = module.presentableController
+    }
+
 }
 
 // MARK: - Private Methods

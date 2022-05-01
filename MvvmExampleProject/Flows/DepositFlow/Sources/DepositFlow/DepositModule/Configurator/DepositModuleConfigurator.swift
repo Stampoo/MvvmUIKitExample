@@ -17,7 +17,7 @@ enum DepositModuleConfigurator {
 
         view.setViewModel(viewModel)
 
-        return (view, viewModel)
+        return (UINavigationController(rootViewController: view), viewModel)
     }
 
 }
