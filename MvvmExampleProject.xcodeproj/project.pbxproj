@@ -14,6 +14,7 @@
 		34D85B65281D4AE900EBD395 /* MvvmExampleProjectTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34D85B64281D4AE900EBD395 /* MvvmExampleProjectTests.swift */; };
 		34D85B6F281D4E4100EBD395 /* Core in Frameworks */ = {isa = PBXBuildFile; productRef = 34D85B6E281D4E4100EBD395 /* Core */; };
 		34D85B7F281D814900EBD395 /* DepositFlow in Frameworks */ = {isa = PBXBuildFile; productRef = 34D85B7E281D814900EBD395 /* DepositFlow */; };
+		34D85B82281E73D000EBD395 /* Library in Frameworks */ = {isa = PBXBuildFile; productRef = 34D85B81281E73D000EBD395 /* Library */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -37,6 +38,7 @@
 		34D85B64281D4AE900EBD395 /* MvvmExampleProjectTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MvvmExampleProjectTests.swift; sourceTree = "<group>"; };
 		34D85B6C281D4CED00EBD395 /* Core */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = Core; sourceTree = "<group>"; };
 		34D85B7D281D805C00EBD395 /* DepositFlow */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = DepositFlow; sourceTree = "<group>"; };
+		34D85B80281E6D5700EBD395 /* Library */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = Library; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -44,6 +46,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				34D85B82281E73D000EBD395 /* Library in Frameworks */,
 				34D85B6F281D4E4100EBD395 /* Core in Frameworks */,
 				34D85B7F281D814900EBD395 /* DepositFlow in Frameworks */,
 			);
@@ -111,6 +114,7 @@
 		34D85B6B281D4C0500EBD395 /* SupportPackages */ = {
 			isa = PBXGroup;
 			children = (
+				34D85B80281E6D5700EBD395 /* Library */,
 				34D85B6C281D4CED00EBD395 /* Core */,
 			);
 			path = SupportPackages;
@@ -150,6 +154,7 @@
 			packageProductDependencies = (
 				34D85B6E281D4E4100EBD395 /* Core */,
 				34D85B7E281D814900EBD395 /* DepositFlow */,
+				34D85B81281E73D000EBD395 /* Library */,
 			);
 			productName = MvvmExampleProject;
 			productReference = 34D85B46281D3FB800EBD395 /* MvvmExampleProject.app */;
@@ -520,6 +525,10 @@
 		34D85B7E281D814900EBD395 /* DepositFlow */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = DepositFlow;
+		};
+		34D85B81281E73D000EBD395 /* Library */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = Library;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
