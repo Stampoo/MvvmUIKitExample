@@ -17,7 +17,7 @@ final class DepositViewController<ViewModel: DepositViewModel>: UIViewController
     // MARK: - Private Properties
 
     private var viewModel: ViewModel?
-    private let tableView = UITableView()
+    private let tableView = TableViewWithCancelEditingRecognizer()
     private let openDepositButton = BlackButton(type: .system)
     private lazy var adapter = tableView.rddm.baseBuilder.build()
     private var cancellableEventsContainer: Set<AnyCancellable> = []
