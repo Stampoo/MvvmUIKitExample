@@ -4,17 +4,15 @@
 import PackageDescription
 
 let package = Package(
-    name: "Library",
+    name: "Resources",
     platforms: [.iOS(.v13)],
     products: [
-        .library(name: "Library", targets: ["Library"])
+        .library(name: "Resources", targets: ["Resources"])
     ],
     dependencies: [
-        .package(path: "./Core"),
-        .package(path: "./Resources")
     ],
     targets: [
-        .target(name: "Library", dependencies: ["Core", "Resources"])
+        .target(name: "Resources", dependencies: [])
     ]
 )
 

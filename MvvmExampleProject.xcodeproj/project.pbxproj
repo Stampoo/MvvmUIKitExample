@@ -39,6 +39,7 @@
 		34D85B6C281D4CED00EBD395 /* Core */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = Core; sourceTree = "<group>"; };
 		34D85B7D281D805C00EBD395 /* DepositFlow */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = DepositFlow; sourceTree = "<group>"; };
 		34D85B80281E6D5700EBD395 /* Library */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = Library; sourceTree = "<group>"; };
+		34D85B832821698500EBD395 /* Resources */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = Resources; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -114,6 +115,7 @@
 		34D85B6B281D4C0500EBD395 /* SupportPackages */ = {
 			isa = PBXGroup;
 			children = (
+				34D85B832821698500EBD395 /* Resources */,
 				34D85B80281E6D5700EBD395 /* Library */,
 				34D85B6C281D4CED00EBD395 /* Core */,
 			);
