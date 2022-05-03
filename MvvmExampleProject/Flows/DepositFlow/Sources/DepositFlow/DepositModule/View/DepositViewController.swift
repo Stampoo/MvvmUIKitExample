@@ -14,6 +14,13 @@ final class DepositViewController<ViewModel: DepositViewModel>: UIViewController
     private let tableView = UITableView()
     private lazy var adapter = tableView.rddm.baseBuilder.build()
     private var cancellableEventsContainer: Set<AnyCancellable> = []
+    private let availableDepositTerms: [DepositTerms] = [
+        .threeMounth,
+        .sixMounth,
+        .nineMounth,
+        .oneYear,
+        .oneAndHalfYear
+    ]
 
     // MARK: - UIViewController
 
@@ -38,7 +45,9 @@ private extension DepositViewController {
     func fillAdapter() {
         let generators: [TableCellGenerator] = [
             getVerticalSpaceGenerator(height: 14),
-            getDepositSumCellGenerator()
+            getDepositSumCellGenerator(),
+            getVerticalSpaceGenerator(height: 32),
+            getDepositTermCellGenerator()
         ]
         adapter.addCellGenerators(generators)
     }
@@ -53,6 +62,19 @@ private extension DepositViewController {
             .store(in: &cancellableEventsContainer)
         let depositSumCellGenerator = BaseNonReusableCellGenerator<DepositSumCell>(with: model)
         return depositSumCellGenerator
+    }
+
+    func getDepositTermCellGenerator() -> TableCellGenerator {
+        let termModels: [DepositTermCell.TermModel] = availableDepositTerms.map { term in
+            let model = DepositTermCell.TermModel(title: term.title)
+            model.selectEventPublisher
+                .sink { _ in }
+                .store(in: &cancellableEventsContainer)
+            return model
+        }
+        let model = DepositTermCell.Model(title: "Срок", terms: termModels)
+        let depositTermCellGenerator = BaseNonReusableCellGenerator<DepositTermCell>(with: model)
+        return depositTermCellGenerator
     }
 
     func getVerticalSpaceGenerator(height: CGFloat) -> TableCellGenerator {
