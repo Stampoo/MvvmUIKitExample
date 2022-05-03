@@ -11,11 +11,15 @@ final class DepositViewModel: DepositViewOutput, DepositModuleInput, DepositModu
     var infoPreinitPublisher: AnyPublisher<DepositInformationPreinitModel, Never> {
         infoPreinitEventTransceiver.publisher.eraseToAnyPublisher()
     }
+    var depositInfoPublisher: AnyPublisher<DepositInformationModel, Never> {
+        depositInfoEventTransceiver.publisher.eraseToAnyPublisher()
+    }
 
     // MARK: - Private Properties
 
     private let infoPreinitEventTransceiver = BaseEventTransceiver<DepositInformationPreinitModel, Never>()
-    private let model: DepositModel
+    private let depositInfoEventTransceiver = BaseEventTransceiver<DepositInformationModel, Never>()
+    private let model: DepositModelProtocol
     private let availableDepositTerms: [DepositTerm] = [
         .threeMounth,
         .sixMounth,
@@ -31,7 +35,7 @@ final class DepositViewModel: DepositViewOutput, DepositModuleInput, DepositModu
 
     // MARK: - Initialization
 
-    init(model: DepositModel) {
+    init(model: DepositModelProtocol) {
         self.model = model
     }
 
@@ -46,10 +50,24 @@ final class DepositViewModel: DepositViewOutput, DepositModuleInput, DepositModu
             )
             infoPreinitEventTransceiver.send(newValue: preinitModel)
         case .sumDidChanged(let _):
-            break
+            updateDepositInformation()
         case .termDidChanged(let _):
-            break
+            updateDepositInformation()
         }
+    }
+
+}
+
+// MARK: - Private Methods
+
+private extension DepositViewModel {
+
+    func updateDepositInformation() {
+        let bannerInfoModel = DepositInformationModel(
+            percent: model.getDepositPercentBasedOnCurrentConditions(),
+            amount: model.getTotalAmountBasedOnCurrentConditions()
+        )
+        depositInfoEventTransceiver.send(newValue: bannerInfoModel)
     }
 
 }

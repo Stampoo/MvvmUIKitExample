@@ -22,6 +22,10 @@ final class DepositViewController<ViewModel: DepositViewModel>: UIViewController
     private lazy var adapter = tableView.rddm.baseBuilder.build()
     private var cancellableEventsContainer: Set<AnyCancellable> = []
 
+    // MARK: - UpdatableGenerators
+
+    private var bannerInfoGenerator: BaseNonReusableCellGenerator<DepositCalculatorBannerCell>?
+
     // MARK: - Internal Methods
 
     func setViewModel(_ viewModel: ViewModel) {
@@ -41,6 +45,15 @@ private extension DepositViewController {
         viewModel?.infoPreinitPublisher
             .receive(on: DispatchQueue.main)
             .sink(receiveValue: fillAdapter(from:))
+            .store(in: &cancellableEventsContainer)
+
+        viewModel?.depositInfoPublisher
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] newBannerInfo in
+                self?.bannerInfoGenerator?.update(
+                    model: .init(percent: newBannerInfo.percent, amount: newBannerInfo.amount)
+                )
+            }
             .store(in: &cancellableEventsContainer)
     }
 
@@ -113,6 +126,7 @@ private extension DepositViewController {
         let depositBannerCellGenerator = BaseNonReusableCellGenerator<DepositCalculatorBannerCell>(
             with: model
         )
+        self.bannerInfoGenerator = depositBannerCellGenerator
         return depositBannerCellGenerator
     }
 
