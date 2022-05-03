@@ -22,6 +22,12 @@ final class DepositViewController<ViewModel: DepositViewModel>: UIViewController
         .oneAndHalfYear
     ]
 
+    private let availableDepositConditions: [DepositCondition] = [
+        .withReplenishCondition,
+        .withWithdrawCondition,
+        .withPercentCondition
+    ]
+
     // MARK: - UIViewController
 
     override func viewDidLoad() {
@@ -47,7 +53,9 @@ private extension DepositViewController {
             getVerticalSpaceGenerator(height: 14),
             getDepositSumCellGenerator(),
             getVerticalSpaceGenerator(height: 32),
-            getDepositTermCellGenerator()
+            getDepositTermCellGenerator(),
+            getVerticalSpaceGenerator(height: 32),
+            getDepositConditionsCellGenerator()
         ]
         adapter.addCellGenerators(generators)
     }
@@ -75,6 +83,23 @@ private extension DepositViewController {
         let model = DepositTermCell.Model(title: "Срок", terms: termModels)
         let depositTermCellGenerator = BaseNonReusableCellGenerator<DepositTermCell>(with: model)
         return depositTermCellGenerator
+    }
+
+    func getDepositConditionsCellGenerator() -> TableCellGenerator {
+        let conditions: [DepositConditionsCell.ConditionModel] = availableDepositConditions.map { condition in
+            let model = DepositConditionsCell.ConditionModel(
+                title: condition.title,
+                description: condition.description
+            )
+            model.selectEventPublisher
+                .sink { _ in }
+                .store(in: &cancellableEventsContainer)
+            return model
+        }
+        let depositConditionCellGenerator = BaseNonReusableCellGenerator<DepositConditionsCell>(
+            with: .init(conditions: conditions)
+        )
+        return depositConditionCellGenerator
     }
 
     func getVerticalSpaceGenerator(height: CGFloat) -> TableCellGenerator {
