@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="19529" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19519"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" id="NSq-ID-88u" customClass="DepositConditionsCell" customModule="Library">
+            <rect key="frame" x="0.0" y="0.0" width="414" height="44"/>
+            <autoresizingMask key="autoresizingMask"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="NSq-ID-88u" id="OAl-IH-bLm">
+                <rect key="frame" x="0.0" y="0.0" width="414" height="44"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="qBl-vo-yhu">
+                        <rect key="frame" x="20" y="0.0" width="374" height="44"/>
+                    </stackView>
+                </subviews>
+                <constraints>
+                    <constraint firstItem="qBl-vo-yhu" firstAttribute="leading" secondItem="OAl-IH-bLm" secondAttribute="leading" constant="20" id="BhD-YB-ZpE"/>
+                    <constraint firstAttribute="bottom" secondItem="qBl-vo-yhu" secondAttribute="bottom" id="YOj-KF-6iS"/>
+                    <constraint firstAttribute="trailing" secondItem="qBl-vo-yhu" secondAttribute="trailing" constant="20" id="YUJ-1H-tHb"/>
+                    <constraint firstItem="qBl-vo-yhu" firstAttribute="top" secondItem="OAl-IH-bLm" secondAttribute="top" id="kUj-PQ-QsU"/>
+                </constraints>
+            </tableViewCellContentView>
+            <connections>
+                <outlet property="stackView" destination="qBl-vo-yhu" id="Xwz-T9-VQV"/>
+            </connections>
+            <point key="canvasLocation" x="330" y="97"/>
+        </tableViewCell>
+    </objects>
+</document>
