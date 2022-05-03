@@ -55,7 +55,9 @@ private extension DepositViewController {
             getVerticalSpaceGenerator(height: 32),
             getDepositTermCellGenerator(),
             getVerticalSpaceGenerator(height: 32),
-            getDepositConditionsCellGenerator()
+            getDepositConditionsCellGenerator(),
+            getVerticalSpaceGenerator(height: 32),
+            getDepositInfoBannerCellGenerator()
         ]
         adapter.addCellGenerators(generators)
     }
@@ -100,6 +102,17 @@ private extension DepositViewController {
             with: .init(conditions: conditions)
         )
         return depositConditionCellGenerator
+    }
+
+    func getDepositInfoBannerCellGenerator() -> TableCellGenerator {
+        let model = DepositCalculatorBannerCell.Model(
+            percent: 17.62,
+            amount: 30456.6
+        )
+        let depositBannerCellGenerator = BaseNonReusableCellGenerator<DepositCalculatorBannerCell>(
+            with: model
+        )
+        return depositBannerCellGenerator
     }
 
     func getVerticalSpaceGenerator(height: CGFloat) -> TableCellGenerator {
