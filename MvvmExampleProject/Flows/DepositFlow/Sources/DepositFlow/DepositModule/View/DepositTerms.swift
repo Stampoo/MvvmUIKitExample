@@ -7,43 +7,33 @@
 
 import Foundation
 
-enum DepositTerms {
-    case base(_ title: String)
-}
-
-extension DepositTerms {
-
-    var title: String {
-        switch self {
-        case .base(let title):
-            return title
-        }
-    }
-
+struct DepositTerm {
+    let title: String
+    let termInMonth: Int
 }
 
 // MARK: - Default terms
 
-extension DepositTerms {
+extension DepositTerm {
 
     static var threeMounth: Self {
-        .base("3 мес.")
+        DepositTerm(title: "3 мес.", termInMonth: 3)
     }
 
     static var sixMounth: Self {
-        .base("6 мес.")
+        DepositTerm(title:"6 мес.", termInMonth: 6)
     }
 
     static var nineMounth: Self {
-        .base("9 мес.")
+        DepositTerm(title: "9 мес.", termInMonth: 9)
     }
 
     static var oneYear: Self {
-        .base("1 год")
+        DepositTerm(title: "1 год", termInMonth: 12)
     }
 
     static var oneAndHalfYear: Self {
-        .base("1,5 года")
+        DepositTerm(title: "1,5 года", termInMonth: 18)
     }
 
 }

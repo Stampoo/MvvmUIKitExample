@@ -3,7 +3,18 @@
 //
 
 import Core
+import Combine
 
-enum DepositEvents { }
+enum DepositEvents {
+    case viewDidLoad
+    case sumDidChanged(_ newSum: Double)
+    case termDidChanged(_ newTermInMonth: Int)
+}
 
-protocol DepositViewOutput: BaseViewModuleOutput where Event == DepositEvents { }
+protocol DepositViewOutput: BaseViewModuleOutput where Event == DepositEvents {
+
+    typealias AnyPublisher = Combine.AnyPublisher
+
+    var infoPreinitPublisher: AnyPublisher<DepositInformationPreinitModel, Never> { get }
+
+}

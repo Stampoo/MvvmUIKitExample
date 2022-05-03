@@ -21,32 +21,14 @@ final class DepositViewController<ViewModel: DepositViewModel>: UIViewController
     private let openDepositButton = BlackButton(type: .system)
     private lazy var adapter = tableView.rddm.baseBuilder.build()
     private var cancellableEventsContainer: Set<AnyCancellable> = []
-    private let availableDepositTerms: [DepositTerms] = [
-        .threeMounth,
-        .sixMounth,
-        .nineMounth,
-        .oneYear,
-        .oneAndHalfYear
-    ]
-
-    private let availableDepositConditions: [DepositCondition] = [
-        .withReplenishCondition,
-        .withWithdrawCondition,
-        .withPercentCondition
-    ]
-
-    // MARK: - UIViewController
-
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        setupInitialState()
-        fillAdapter()
-    }
 
     // MARK: - Internal Methods
 
     func setViewModel(_ viewModel: ViewModel) {
         self.viewModel = viewModel
+        setupInitialState()
+        subscribeOnViewModelEvents()
+        viewModel.didEventTriggered(.viewDidLoad)
     }
 
 }
@@ -55,18 +37,26 @@ final class DepositViewController<ViewModel: DepositViewModel>: UIViewController
 
 private extension DepositViewController {
 
-    func fillAdapter() {
+    func subscribeOnViewModelEvents() {
+        viewModel?.infoPreinitPublisher
+            .receive(on: DispatchQueue.main)
+            .sink(receiveValue: fillAdapter(from:))
+            .store(in: &cancellableEventsContainer)
+    }
+
+    func fillAdapter(from model: DepositInformationPreinitModel) {
         let generators: [TableCellGenerator] = [
             getVerticalSpaceGenerator(height: 14),
             getDepositSumCellGenerator(),
             getVerticalSpaceGenerator(height: 32),
-            getDepositTermCellGenerator(),
+            getDepositTermCellGenerator(terms: model.availableDepositTerms),
             getVerticalSpaceGenerator(height: 32),
-            getDepositConditionsCellGenerator(),
+            getDepositConditionsCellGenerator(conditions: model.availableDepositConditions),
             getVerticalSpaceGenerator(height: 32),
             getDepositInfoBannerCellGenerator()
         ]
         adapter.addCellGenerators(generators)
+        adapter.forceRefill()
     }
 
     func getDepositSumCellGenerator() -> TableCellGenerator {
@@ -75,17 +65,21 @@ private extension DepositViewController {
             state: .common(text: "От 15 000 ₽")
         )
         model.sumDidChangePublisher
-            .sink { _ in }
+            .sink { [weak self] newSum in
+                self?.viewModel?.didEventTriggered(.sumDidChanged(newSum))
+            }
             .store(in: &cancellableEventsContainer)
         let depositSumCellGenerator = BaseNonReusableCellGenerator<DepositSumCell>(with: model)
         return depositSumCellGenerator
     }
 
-    func getDepositTermCellGenerator() -> TableCellGenerator {
-        let termModels: [DepositTermCell.TermModel] = availableDepositTerms.map { term in
+    func getDepositTermCellGenerator(terms: [DepositTerm]) -> TableCellGenerator {
+        let termModels: [DepositTermCell.TermModel] = terms.map { term in
             let model = DepositTermCell.TermModel(title: term.title)
             model.selectEventPublisher
-                .sink { _ in }
+                .sink { [weak self] _ in
+                    self?.viewModel?.didEventTriggered(.termDidChanged(term.termInMonth))
+                }
                 .store(in: &cancellableEventsContainer)
             return model
         }
@@ -94,8 +88,8 @@ private extension DepositViewController {
         return depositTermCellGenerator
     }
 
-    func getDepositConditionsCellGenerator() -> TableCellGenerator {
-        let conditions: [DepositConditionsCell.ConditionModel] = availableDepositConditions.map { condition in
+    func getDepositConditionsCellGenerator(conditions: [DepositCondition]) -> TableCellGenerator {
+        let conditions: [DepositConditionsCell.ConditionModel] = conditions.map { condition in
             let model = DepositConditionsCell.ConditionModel(
                 title: condition.title,
                 description: condition.description
