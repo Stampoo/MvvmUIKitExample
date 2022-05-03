@@ -8,10 +8,17 @@ import Combine
 
 final class DepositViewController<ViewModel: DepositViewModel>: UIViewController {
 
+    // MARK: - Nested Types
+
+    private enum Constants {
+        static var openDepositButtonHeight: CGFloat { 48 }
+    }
+
     // MARK: - Private Properties
 
     private var viewModel: ViewModel?
     private let tableView = UITableView()
+    private let openDepositButton = BlackButton(type: .system)
     private lazy var adapter = tableView.rddm.baseBuilder.build()
     private var cancellableEventsContainer: Set<AnyCancellable> = []
     private let availableDepositTerms: [DepositTerms] = [
@@ -130,6 +137,7 @@ private extension DepositViewController {
         view.backgroundColor = .white
 
         configureTableView()
+        configureOpenDepositButton()
         configureNavigationBar()
     }
 
@@ -138,11 +146,29 @@ private extension DepositViewController {
         tableView.translatesAutoresizingMaskIntoConstraints = false
         tableView.backgroundColor = .white
         tableView.separatorStyle = .none
+        tableView.contentInset.bottom = Constants.openDepositButtonHeight
+        tableView.sectionHeaderTopPadding = .zero
         NSLayoutConstraint.activate([
             tableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
             tableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
             tableView.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor),
             tableView.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor)
+        ])
+    }
+
+    func configureOpenDepositButton() {
+        view.addSubview(openDepositButton)
+        openDepositButton.translatesAutoresizingMaskIntoConstraints = false
+        openDepositButton.setTitle("Открыть вклад", for: .normal)
+        openDepositButton.tapEventPublisher
+            .sink { _ in }
+            .store(in: &cancellableEventsContainer)
+
+        NSLayoutConstraint.activate([
+            openDepositButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -16),
+            openDepositButton.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor, constant: 20),
+            openDepositButton.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor, constant: -20),
+            openDepositButton.heightAnchor.constraint(equalToConstant: Constants.openDepositButtonHeight)
         ])
     }
 
