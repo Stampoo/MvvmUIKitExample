@@ -17,5 +17,7 @@ protocol DepositViewOutput: BaseViewModuleOutput where Event == DepositEvents {
     typealias AnyPublisher = Combine.AnyPublisher
 
     var infoPreinitPublisher: AnyPublisher<DepositInformationPreinitModel, Never> { get }
+    var depositInfoPublisher: AnyPublisher<DepositInformationModel, Never> { get }
+    var depositConditionsPublisher: AnyPublisher<[DepositCondition], Never> { get }
 
 }

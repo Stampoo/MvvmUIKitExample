@@ -56,6 +56,18 @@ private extension DepositViewController {
                 )
             }
             .store(in: &cancellableEventsContainer)
+
+        viewModel?.depositConditionsPublisher
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] conditions in
+                guard let self = self else {
+                    return
+                }
+                self.depositConditionCellGenerator?.update(
+                    model: self.getDepositConditionsGeneratorModels(conditions: conditions)
+                )
+            }
+            .store(in: &cancellableEventsContainer)
     }
 
     func fillAdapter(from model: DepositInformationPreinitModel) {
