@@ -10,6 +10,7 @@ enum DepositEvents {
     case sumDidChanged(_ newSum: Double)
     case termDidChanged(_ newTermInMonth: Int)
     case conditionDidChanged(_ newCondition: DepositCondition)
+    case openDepositDidPressed
 }
 
 protocol DepositViewOutput: BaseViewModuleOutput where Event == DepositEvents {

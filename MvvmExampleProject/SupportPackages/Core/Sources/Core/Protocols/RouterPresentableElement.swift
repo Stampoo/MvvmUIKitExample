@@ -19,4 +19,9 @@ extension UIViewController: RouterPresentableElement {
         self
     }
 
+    public var fullscreenPresentableController: RouterPresentableElement {
+        self.modalPresentationStyle = .fullScreen
+        return self
+    }
+
 }

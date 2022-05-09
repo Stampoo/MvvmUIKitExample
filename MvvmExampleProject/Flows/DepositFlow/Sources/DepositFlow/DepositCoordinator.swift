@@ -24,8 +24,23 @@ public final class DepositCoordinator: BaseCoordinator {
 private extension DepositCoordinator {
 
     func showDepositModule() {
-        let (view, _) = DepositModuleConfigurator.configure()
+        let (view, output) = DepositModuleConfigurator.configure()
+
+        output.onDepositDidOpened = { [weak self] in
+            self?.showSuccessPageModule()
+        }
+
         router.setAsRoot(module: view)
+    }
+
+    func showSuccessPageModule() {
+        let (view, output) = SuccessPageModuleConfigurator.configure()
+        
+        output.onCloseDidTriggered = { [weak self] in
+            self?.router.dismissTopPresentedModule(isAnimated: true)
+        }
+
+        router.present(view.fullscreenPresentableController, isAnimated: true)
     }
 
 }

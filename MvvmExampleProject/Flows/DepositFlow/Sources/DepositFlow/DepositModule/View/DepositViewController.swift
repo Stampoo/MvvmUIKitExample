@@ -196,7 +196,9 @@ private extension DepositViewController {
         openDepositButton.translatesAutoresizingMaskIntoConstraints = false
         openDepositButton.setTitle("Открыть вклад", for: .normal)
         openDepositButton.tapEventPublisher
-            .sink { _ in }
+            .sink { [weak viewModel] _ in
+                viewModel?.didEventTriggered(.openDepositDidPressed)
+            }
             .store(in: &cancellableEventsContainer)
 
         NSLayoutConstraint.activate([

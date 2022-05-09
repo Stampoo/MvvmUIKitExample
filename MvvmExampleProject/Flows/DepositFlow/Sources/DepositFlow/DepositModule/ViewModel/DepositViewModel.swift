@@ -6,6 +6,10 @@ import EventTransceiver
 
 final class DepositViewModel: DepositViewOutput, DepositModuleInput, DepositModuleOutput {
 
+    // MARK: - DepositModuleOutput
+
+    var onDepositDidOpened: (() -> Void)?
+
     // MARK: - DepositViewOutput
 
     var infoPreinitPublisher: AnyPublisher<DepositInformationPreinitModel, Never> {
@@ -68,6 +72,8 @@ final class DepositViewModel: DepositViewOutput, DepositModuleInput, DepositModu
         case .conditionDidChanged(let newCondition):
             updateConditions(dependOn: newCondition)
             updateDepositInformation()
+        case .openDepositDidPressed:
+            onDepositDidOpened?()
         }
     }
 
