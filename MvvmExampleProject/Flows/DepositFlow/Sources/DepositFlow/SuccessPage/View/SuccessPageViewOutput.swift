@@ -4,6 +4,8 @@
 
 import Core
 
-enum SuccessPageEvents { }
+enum SuccessPageEvents {
+    case closeDidPressed
+}
 
 protocol SuccessPageViewOutput: BaseViewModuleOutput where Event == SuccessPageEvents { }

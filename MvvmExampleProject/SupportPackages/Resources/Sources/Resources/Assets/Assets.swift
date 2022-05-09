@@ -11,5 +11,6 @@ import UIKit
 public enum Assets {
 
     public static let checkmark = UIImage(named: "checkmark", in: .module, with: nil)
+    public static let successLogo = UIImage(named: "successPageLogo", in: .module, with: nil)
 
 }

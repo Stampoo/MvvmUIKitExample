@@ -2,4 +2,8 @@
 //  Copyright © Surf. All rights reserved.
 //
 
-protocol SuccessPageModuleOutput: AnyObject { }
+protocol SuccessPageModuleOutput: AnyObject {
+
+    var onCloseDidTriggered: (() -> Void)? { get set }
+    
+}

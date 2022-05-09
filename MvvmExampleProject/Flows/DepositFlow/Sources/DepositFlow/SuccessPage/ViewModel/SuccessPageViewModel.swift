@@ -4,6 +4,10 @@
 
 final class SuccessPageViewModel: SuccessPageViewOutput, SuccessPageModuleInput, SuccessPageModuleOutput {
 
+    // MARK: - SuccessPageModuleOutput
+
+    var onCloseDidTriggered: (() -> Void)?
+
     // MARK: - Private Properties
 
     private let model: SuccessPageModel
@@ -16,6 +20,11 @@ final class SuccessPageViewModel: SuccessPageViewOutput, SuccessPageModuleInput,
 
     // MARK: - SuccessPageViewOutput
 
-    func didEventTriggered(_ triggeredEvent: Event) { }
+    func didEventTriggered(_ triggeredEvent: SuccessPageEvents) {
+        switch triggeredEvent {
+        case .closeDidPressed:
+            onCloseDidTriggered?()
+        }
+    }
 
 }
