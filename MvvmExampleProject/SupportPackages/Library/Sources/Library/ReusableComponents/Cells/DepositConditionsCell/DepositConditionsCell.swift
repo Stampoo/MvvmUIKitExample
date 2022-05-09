@@ -89,6 +89,7 @@ private extension DepositConditionsCell {
                         .filter { $0 != conditionView }
                         .forEach { $0.setIsSelectedState(false) }
                 }
+                .optionalSink(receiveValue: conditionModel.selectEventTransceiver.send(newValue:))
                 .store(in: &cancellableEventsContainer)
         }
     }

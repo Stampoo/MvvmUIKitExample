@@ -9,7 +9,7 @@ import Combine
 
 public extension Publisher where Self.Failure == Never {
 
-    func sink(receiveValue: @escaping ((Self.Output) -> Void?)) -> AnyCancellable {
+    func optionalSink(receiveValue: @escaping ((Self.Output) -> Void?)) -> AnyCancellable {
         let erasedCallback: (Self.Output) -> Void = { output in
             receiveValue(output)
             return Void()
@@ -21,7 +21,7 @@ public extension Publisher where Self.Failure == Never {
 
 public extension AnyPublisher where Self.Failure == Never {
 
-    func sink(receiveValue: @escaping ((Self.Output) -> Void?)) -> AnyCancellable {
+    func optionalSink(receiveValue: @escaping ((Self.Output) -> Void?)) -> AnyCancellable {
         let erasedCallback: (Self.Output) -> Void = { output in
             receiveValue(output)
             return Void()
