@@ -79,6 +79,8 @@ public final class DepositTermCell: UITableViewCell, ConfigurableItem {
 private extension DepositTermCell {
 
     func setupInitialState() {
+        selectionStyle = .none
+
         configureTitleLabel()
     }
 

@@ -7,7 +7,7 @@ import Library
 import Resources
 import Combine
 
-final class SuccessPageViewController<ViewModel: SuccessPageViewOutput>: UIViewController {
+final class SuccessPageViewController<ViewModel: SuccessPageViewOutput>: LightViewController {
 
     // MARK: - Private Properties
 

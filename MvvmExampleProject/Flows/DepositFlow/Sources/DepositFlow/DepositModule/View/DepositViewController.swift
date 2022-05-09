@@ -6,7 +6,7 @@ import UIKit
 import Library
 import Combine
 
-final class DepositViewController<ViewModel: DepositViewOutput>: UIViewController {
+final class DepositViewController<ViewModel: DepositViewOutput>: LightViewController {
 
     // MARK: - Nested Types
 
