@@ -11,6 +11,9 @@ struct DepositCondition: Hashable {
     let description: String
     let depositPercentQuantity: Double
 
+    var isDisabled: Bool = false
+    var isSelected: Bool = false
+
 }
 
 extension DepositCondition {

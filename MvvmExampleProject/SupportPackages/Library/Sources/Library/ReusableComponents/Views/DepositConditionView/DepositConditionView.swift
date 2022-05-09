@@ -34,7 +34,7 @@ final class DepositConditionView: UIView {
     // MARK: - Private Properties
 
     private var model: Model?
-    private var isSelected: Bool = false
+    private var state: DepositConditionState = .canBeChosen
 
     // MARK: - UITableViewCell
 
@@ -50,21 +50,28 @@ final class DepositConditionView: UIView {
 
     // MARK: - ConfigurableItem
 
-    func setIsSelectedState(_ isSelected: Bool) {
-        self.isSelected = isSelected
-        switch isSelected {
+    func setState(_ state: DepositConditionState) {
+        guard !state.isDisabled else {
+            isUserInteractionEnabled = false
+            configureAsDisabled()
+            return
+        }
+        isUserInteractionEnabled = true
+        switch state.isSelected {
         case true:
             configureAsIsSelected()
         case false:
             configureAsIsDiselected()
         }
+
+        self.state = state
     }
 
     func configure(with model: Model) {
         self.model = model
         titleLabel.text = model.title
         descriptionLabel.text = model.description
-        setIsSelectedState(isSelected)
+        setState(state)
     }
 
     static func loadFromNibDirectly() -> Self {
@@ -84,18 +91,30 @@ final class DepositConditionView: UIView {
 private extension DepositConditionView {
 
     func configureAsIsSelected() {
+        titleLabel.textColor = .black
         checkBoxView.isHidden = false
         checkBoxContainer.backgroundColor = .black
         checkBoxContainer.layer.borderWidth = .zero
     }
 
     func configureAsIsDiselected() {
+        checkBoxContainer.layer.borderColor = UIColor.black.cgColor
+        titleLabel.textColor = .black
         checkBoxView.isHidden = true
         checkBoxContainer.backgroundColor = .clear
         checkBoxContainer.layer.borderWidth = 1
     }
 
+    func configureAsDisabled() {
+        configureAsIsDiselected()
+
+        checkBoxContainer.layer.borderColor = UIColor.systemGray.cgColor
+        titleLabel.textColor = .systemGray
+    }
+
     func setupInitialState() {
+        layer.cornerRadius = 12
+
         configureTitleLabel()
         configureDescriptionLabel()
         configureCheckBox()
@@ -110,7 +129,7 @@ private extension DepositConditionView {
 
     @objc
     func onDidTap() {
-        guard !isSelected else {
+        guard !state.isSelected else {
             return
         }
         model?.selectEventTransceiver.send(newValue: Void())

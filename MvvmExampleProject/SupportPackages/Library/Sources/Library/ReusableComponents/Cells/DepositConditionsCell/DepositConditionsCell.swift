@@ -24,15 +24,17 @@ public final class DepositConditionsCell: UITableViewCell, ConfigurableItem {
     public struct ConditionModel {
         let title: String
         let description: String
+        let state: DepositConditionState
         let selectEventTransceiver = BaseEventTransceiver<Void, Never>()
 
         public var selectEventPublisher: AnyPublisher<Void, Never> {
             selectEventTransceiver.publisher.eraseToAnyPublisher()
         }
 
-        public init(title: String, description: String) {
+        public init(title: String, description: String, state: DepositConditionState) {
             self.title = title
             self.description = description
+            self.state = state
         }
     }
 
@@ -44,7 +46,7 @@ public final class DepositConditionsCell: UITableViewCell, ConfigurableItem {
 
     private var model: Model?
     private var cancellableEventsContainer: Set<AnyCancellable> = []
-    private var currentConditions: Set<DepositConditionView> = []
+    private var currentConditions: [DepositConditionView: DepositConditionState] = [:]
 
     // MARK: - UITableViewCell
 
@@ -71,24 +73,16 @@ public final class DepositConditionsCell: UITableViewCell, ConfigurableItem {
 private extension DepositConditionsCell {
 
     func fillConditions(from conditionModels: [ConditionModel]) {
-        guard currentConditions.isEmpty else {
-            return
-        }
+        currentConditions.map(\.key).forEach { $0.removeFromSuperview() }
         for conditionModel in conditionModels {
             let conditionView: DepositConditionView = .loadFromNibDirectly()
             let model = DepositConditionView.Model(title: conditionModel.title, description: conditionModel.description)
             conditionView.configure(with: model)
-            currentConditions.insert(conditionView)
+            conditionView.setState(conditionModel.state)
+            currentConditions[conditionView] = conditionModel.state
             stackView.addArrangedSubview(conditionView)
 
             model.selectEventPublisher
-                .sink { [weak self] _ in
-                    conditionView.setIsSelectedState(true)
-                    conditionModel.selectEventTransceiver.send(newValue: Void())
-                    return self?.currentConditions
-                        .filter { $0 != conditionView }
-                        .forEach { $0.setIsSelectedState(false) }
-                }
                 .optionalSink(receiveValue: conditionModel.selectEventTransceiver.send(newValue:))
                 .store(in: &cancellableEventsContainer)
         }

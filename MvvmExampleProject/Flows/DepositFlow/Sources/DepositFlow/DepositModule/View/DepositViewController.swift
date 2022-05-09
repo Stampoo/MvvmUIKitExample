@@ -6,7 +6,7 @@ import UIKit
 import Library
 import Combine
 
-final class DepositViewController<ViewModel: DepositViewModel>: UIViewController {
+final class DepositViewController<ViewModel: DepositViewOutput>: UIViewController {
 
     // MARK: - Nested Types
 
@@ -25,6 +25,7 @@ final class DepositViewController<ViewModel: DepositViewModel>: UIViewController
     // MARK: - UpdatableGenerators
 
     private var bannerInfoGenerator: BaseNonReusableCellGenerator<DepositCalculatorBannerCell>?
+    private var depositConditionCellGenerator: BaseNonReusableCellGenerator<DepositConditionsCell>?
 
     // MARK: - Internal Methods
 
@@ -102,19 +103,10 @@ private extension DepositViewController {
     }
 
     func getDepositConditionsCellGenerator(conditions: [DepositCondition]) -> TableCellGenerator {
-        let conditions: [DepositConditionsCell.ConditionModel] = conditions.map { condition in
-            let model = DepositConditionsCell.ConditionModel(
-                title: condition.title,
-                description: condition.description
-            )
-            model.selectEventPublisher
-                .sink { _ in }
-                .store(in: &cancellableEventsContainer)
-            return model
-        }
         let depositConditionCellGenerator = BaseNonReusableCellGenerator<DepositConditionsCell>(
-            with: .init(conditions: conditions)
+            with: getDepositConditionsGeneratorModels(conditions: conditions)
         )
+        self.depositConditionCellGenerator = depositConditionCellGenerator
         return depositConditionCellGenerator
     }
 
@@ -133,6 +125,29 @@ private extension DepositViewController {
     func getVerticalSpaceGenerator(height: CGFloat) -> TableCellGenerator {
         let verticalSpaceCellGenerator = BaseNonReusableCellGenerator<VerticalSpaceCell>(with: .init(height: height))
         return verticalSpaceCellGenerator
+    }
+
+}
+
+// MARK: - Models for generators
+
+private extension DepositViewController {
+
+    func getDepositConditionsGeneratorModels(conditions: [DepositCondition]) -> DepositConditionsCell.Model {
+        let conditions: [DepositConditionsCell.ConditionModel] = conditions.map { condition in
+            let model = DepositConditionsCell.ConditionModel(
+                title: condition.title,
+                description: condition.description,
+                state:  condition.isDisabled ? .cannotBeChosen : condition.isSelected ? .selected : .canBeChosen
+            )
+            model.selectEventPublisher
+                .sink { [weak viewModel] _ in
+                    viewModel?.didEventTriggered(.conditionDidChanged(condition))
+                }
+                .store(in: &cancellableEventsContainer)
+            return model
+        }
+        return .init(conditions: conditions)
     }
 
 }

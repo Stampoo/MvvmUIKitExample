@@ -7,7 +7,7 @@
 
 import EventTransceiver
 
-public protocol BaseViewModuleOutput {
+public protocol BaseViewModuleOutput: AnyObject {
 
     typealias EventTransceiver<Input> = BaseEventTransceiver<Input, Never>
     typealias RegularEventPublisher<Input> = EventPublisher<EventTransceiver<Input>, Input, Never>
