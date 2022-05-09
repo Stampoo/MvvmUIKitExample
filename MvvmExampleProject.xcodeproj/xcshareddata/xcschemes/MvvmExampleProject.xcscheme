@@ -48,6 +48,16 @@
                ReferencedContainer = "container:MvvmExampleProject/SupportPackages/Core">
             </BuildableReference>
          </TestableReference>
+         <TestableReference
+            skipped = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "DepositFlowTests"
+               BuildableName = "DepositFlowTests"
+               BlueprintName = "DepositFlowTests"
+               ReferencedContainer = "container:MvvmExampleProject/Flows/DepositFlow">
+            </BuildableReference>
+         </TestableReference>
       </Testables>
    </TestAction>
    <LaunchAction

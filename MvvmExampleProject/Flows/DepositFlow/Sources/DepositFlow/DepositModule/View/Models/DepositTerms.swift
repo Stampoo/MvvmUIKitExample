@@ -37,3 +37,11 @@ extension DepositTerm {
     }
 
 }
+
+extension DepositTerm: CaseIterable {
+
+    static var allCases: [DepositTerm] {
+        [.threeMounth, .sixMounth, .nineMounth, .oneYear, .oneAndHalfYear]
+    }
+
+}
