@@ -28,6 +28,10 @@ final class DepositModel: DepositModelProtocol {
         currentSelectedConditions
     }
 
+    func getCurrentSelectedTermInMonth() -> Int {
+        currentTermInMonths
+    }
+
     func getCurrentDisabledConditions() -> Set<DepositCondition> {
         currrentDisabledConditions
     }

@@ -24,6 +24,9 @@ final class DepositViewModel: DepositViewOutput, DepositModuleInput, DepositModu
     var depositSumValidationPublisher: AnyPublisher<ValidationProtocol, Never> {
         depositSumValidationTransceiver.publisher.eraseToAnyPublisher()
     }
+    var openDepositPossibilityPublisher: AnyPublisher<Bool, Never> {
+        openDepositPossibilityTransceiver.publisher.eraseToAnyPublisher()
+    }
 
     // MARK: - Private Properties
 
@@ -31,6 +34,7 @@ final class DepositViewModel: DepositViewOutput, DepositModuleInput, DepositModu
     private let depositInfoEventTransceiver = BaseEventTransceiver<DepositInformationModel, Never>()
     private let depositConditionsTransceiver  = BaseEventTransceiver<[DepositCondition], Never>()
     private let depositSumValidationTransceiver = BaseEventTransceiver<ValidationProtocol, Never>()
+    private let openDepositPossibilityTransceiver = BaseEventTransceiver<Bool, Never>()
     private let model: DepositModelProtocol
     private let availableDepositTerms: [DepositTerm] = [
         .threeMounth,
@@ -75,6 +79,7 @@ final class DepositViewModel: DepositViewOutput, DepositModuleInput, DepositModu
         case .openDepositDidPressed:
             onDepositDidOpened?()
         }
+        updateOpenDepositPossibility()
     }
 
 }
@@ -127,6 +132,16 @@ private extension DepositViewModel {
             amount: model.getTotalAmountBasedOnCurrentConditions()
         )
         depositInfoEventTransceiver.send(newValue: bannerInfoModel)
+    }
+
+    func updateOpenDepositPossibility() {
+        let isAmountValid = model.getAmountValidationResult().isValid
+        let hasChosenTerm = model.getCurrentSelectedTermInMonth() != .zero
+        let hasChosenConditions = !model.getCurrentSelectedConditions().isEmpty
+
+        openDepositPossibilityTransceiver.send(
+            newValue: isAmountValid && hasChosenTerm && hasChosenConditions
+        )
     }
 
 }
