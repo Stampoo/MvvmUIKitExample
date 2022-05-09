@@ -19,5 +19,6 @@ protocol DepositViewOutput: BaseViewModuleOutput where Event == DepositEvents {
     var infoPreinitPublisher: AnyPublisher<DepositInformationPreinitModel, Never> { get }
     var depositInfoPublisher: AnyPublisher<DepositInformationModel, Never> { get }
     var depositConditionsPublisher: AnyPublisher<[DepositCondition], Never> { get }
+    var depositSumValidationPublisher: AnyPublisher<ValidationProtocol, Never> { get }
 
 }

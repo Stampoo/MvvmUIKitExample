@@ -17,12 +17,16 @@ final class DepositViewModel: DepositViewOutput, DepositModuleInput, DepositModu
     var depositConditionsPublisher: AnyPublisher<[DepositCondition], Never> {
         depositConditionsTransceiver .publisher.eraseToAnyPublisher()
     }
+    var depositSumValidationPublisher: AnyPublisher<ValidationProtocol, Never> {
+        depositSumValidationTransceiver.publisher.eraseToAnyPublisher()
+    }
 
     // MARK: - Private Properties
 
     private let infoPreinitEventTransceiver = BaseEventTransceiver<DepositInformationPreinitModel, Never>()
     private let depositInfoEventTransceiver = BaseEventTransceiver<DepositInformationModel, Never>()
     private let depositConditionsTransceiver  = BaseEventTransceiver<[DepositCondition], Never>()
+    private let depositSumValidationTransceiver = BaseEventTransceiver<ValidationProtocol, Never>()
     private let model: DepositModelProtocol
     private let availableDepositTerms: [DepositTerm] = [
         .threeMounth,
@@ -53,13 +57,17 @@ final class DepositViewModel: DepositViewOutput, DepositModuleInput, DepositModu
                 conditions: availableDepositConditions
             )
             infoPreinitEventTransceiver.send(newValue: preinitModel)
-        case .sumDidChanged(let _):
+            updateSum()
+        case .sumDidChanged(let newAmount):
+            model.setAmount(newAmount)
+            updateSum()
             updateDepositInformation()
         case .termDidChanged(let termInMoths):
             updateConditions(dependOn: termInMoths)
             updateDepositInformation()
         case .conditionDidChanged(let newCondition):
             updateConditions(dependOn: newCondition)
+            updateDepositInformation()
         }
     }
 
@@ -68,6 +76,10 @@ final class DepositViewModel: DepositViewOutput, DepositModuleInput, DepositModu
 // MARK: - Private Methods
 
 private extension DepositViewModel {
+
+    func updateSum() {
+        depositSumValidationTransceiver.send(newValue: model.getAmountValidationResult())
+    }
 
     func updateConditions(dependOn months: Int) {
         let selectedConditions = model.getCurrentSelectedConditions()

@@ -16,4 +16,7 @@ protocol DepositModelProtocol {
     func getSelectedConditionsBasedOn(condition: DepositCondition) -> Set<DepositCondition>
     func getDisabledConditionsBasedOn(months: Int) -> Set<DepositCondition>
 
+    func setAmount(_ amount: Double)
+    func getAmountValidationResult() -> ValidationProtocol
+
 }

@@ -9,12 +9,17 @@ final class DepositModel: DepositModelProtocol {
     private enum Constants {
         static let mothsTresholdForDisableConditions = 12
         static let disabledConditions: Set<DepositCondition> = [.withReplenishCondition, .withWithdrawCondition]
+
+        static let upperSumTreshold: Double = 10_000_000
+        static let lowerSumTreshold: Double = 15_000
     }
 
     // MARK: - Private Properties
 
-    var currentSelectedConditions: Set<DepositCondition> = []
-    var currrentDisabledConditions: Set<DepositCondition> = []
+    private var currentSelectedConditions: Set<DepositCondition> = []
+    private var currrentDisabledConditions: Set<DepositCondition> = []
+    private var currentSum: Double = .zero
+    private var currentTermInMonths: Int = .zero
 
     // MARK: - DepositModelProtocol
 
@@ -27,11 +32,15 @@ final class DepositModel: DepositModelProtocol {
     }
 
     func getDepositPercentBasedOnCurrentConditions() -> Double {
-        .zero
+        let termPercent = Double(currentTermInMonths * 3)
+        let correctPercentWithConditions = currentSelectedConditions.reduce(termPercent) { partialResult, condition in
+            partialResult * condition.depositPercentQuantity
+        }
+        return correctPercentWithConditions
     }
 
     func getTotalAmountBasedOnCurrentConditions() -> Double {
-        .zero
+        currentSum + currentSum * getDepositPercentBasedOnCurrentConditions()
     }
 
     func getSelectedConditionsBasedOn(condition: DepositCondition) -> Set<DepositCondition> {
@@ -44,6 +53,7 @@ final class DepositModel: DepositModelProtocol {
     }
 
     func getDisabledConditionsBasedOn(months: Int) -> Set<DepositCondition> {
+        self.currentTermInMonths = months
         guard months >= Constants.mothsTresholdForDisableConditions else {
             currrentDisabledConditions = []
             return []
@@ -51,6 +61,20 @@ final class DepositModel: DepositModelProtocol {
         updateCurrentSelectedConditionsWithDisabled()
         currrentDisabledConditions = Constants.disabledConditions
         return Constants.disabledConditions
+    }
+
+    func setAmount(_ amount: Double) {
+        self.currentSum = amount
+    }
+
+    func getAmountValidationResult() -> ValidationProtocol {
+        let isNotSmallerThanLower = currentSum > Constants.lowerSumTreshold
+        let isNotMoreThanUpper = currentSum < Constants.upperSumTreshold
+        return Validation(isNotSmallerThanLower && isNotMoreThanUpper)
+            .replaceSuccessDescription(with: "от \(Int(Constants.lowerSumTreshold))")
+            .replaceFailureDescription(
+                with: isNotSmallerThanLower ? "до \(Int(Constants.upperSumTreshold))" : "от \(Int(Constants.lowerSumTreshold))"
+            )
     }
 
 }

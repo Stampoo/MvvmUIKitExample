@@ -22,11 +22,6 @@ final class DepositViewController<ViewModel: DepositViewOutput>: UIViewControlle
     private lazy var adapter = tableView.rddm.baseBuilder.build()
     private var cancellableEventsContainer: Set<AnyCancellable> = []
 
-    // MARK: - UpdatableGenerators
-
-    private var bannerInfoGenerator: BaseNonReusableCellGenerator<DepositCalculatorBannerCell>?
-    private var depositConditionCellGenerator: BaseNonReusableCellGenerator<DepositConditionsCell>?
-
     // MARK: - Internal Methods
 
     func setViewModel(_ viewModel: ViewModel) {
@@ -47,27 +42,6 @@ private extension DepositViewController {
             .receive(on: DispatchQueue.main)
             .sink(receiveValue: fillAdapter(from:))
             .store(in: &cancellableEventsContainer)
-
-        viewModel?.depositInfoPublisher
-            .receive(on: DispatchQueue.main)
-            .sink { [weak self] newBannerInfo in
-                self?.bannerInfoGenerator?.update(
-                    model: .init(percent: newBannerInfo.percent, amount: newBannerInfo.amount)
-                )
-            }
-            .store(in: &cancellableEventsContainer)
-
-        viewModel?.depositConditionsPublisher
-            .receive(on: DispatchQueue.main)
-            .sink { [weak self] conditions in
-                guard let self = self else {
-                    return
-                }
-                self.depositConditionCellGenerator?.update(
-                    model: self.getDepositConditionsGeneratorModels(conditions: conditions)
-                )
-            }
-            .store(in: &cancellableEventsContainer)
     }
 
     func fillAdapter(from model: DepositInformationPreinitModel) {
@@ -86,9 +60,9 @@ private extension DepositViewController {
     }
 
     func getDepositSumCellGenerator() -> TableCellGenerator {
-        let model = DepositSumCell.Model(
+        var model = DepositSumCell.Model(
             title: "Сумма депозита",
-            state: .common(text: "От 15 000 ₽")
+            state: .common(text: "")
         )
         model.sumDidChangePublisher
             .sink { [weak self] newSum in
@@ -96,6 +70,15 @@ private extension DepositViewController {
             }
             .store(in: &cancellableEventsContainer)
         let depositSumCellGenerator = BaseNonReusableCellGenerator<DepositSumCell>(with: model)
+
+        viewModel?.depositSumValidationPublisher
+            .sink { validationResult in
+                validationResult.isValid
+                    ? model.set(state: .common(text: validationResult.description))
+                    : model.set(state: .error(text: validationResult.description))
+                depositSumCellGenerator.update(model: model)
+            }
+            .store(in: &cancellableEventsContainer)
         return depositSumCellGenerator
     }
 
@@ -118,7 +101,17 @@ private extension DepositViewController {
         let depositConditionCellGenerator = BaseNonReusableCellGenerator<DepositConditionsCell>(
             with: getDepositConditionsGeneratorModels(conditions: conditions)
         )
-        self.depositConditionCellGenerator = depositConditionCellGenerator
+        viewModel?.depositConditionsPublisher
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] conditions in
+                guard let self = self else {
+                    return
+                }
+                depositConditionCellGenerator.update(
+                    model: self.getDepositConditionsGeneratorModels(conditions: conditions)
+                )
+            }
+            .store(in: &cancellableEventsContainer)
         return depositConditionCellGenerator
     }
 
@@ -130,7 +123,14 @@ private extension DepositViewController {
         let depositBannerCellGenerator = BaseNonReusableCellGenerator<DepositCalculatorBannerCell>(
             with: model
         )
-        self.bannerInfoGenerator = depositBannerCellGenerator
+        viewModel?.depositInfoPublisher
+            .receive(on: DispatchQueue.main)
+            .sink { newBannerInfo in
+                depositBannerCellGenerator.update(
+                    model: .init(percent: newBannerInfo.percent, amount: newBannerInfo.amount)
+                )
+            }
+            .store(in: &cancellableEventsContainer)
         return depositBannerCellGenerator
     }
 

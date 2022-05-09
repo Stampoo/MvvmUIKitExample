@@ -22,7 +22,7 @@ extension DepositCondition {
         .init(
             title: "С пополнением",
             description: "Сроком только до 1 года",
-            depositPercentQuantity: 0.1
+            depositPercentQuantity: 0.8
         )
     }
 
@@ -30,7 +30,7 @@ extension DepositCondition {
         .init(
             title: "С частичным снятием",
             description: "Вместе с пополнением",
-            depositPercentQuantity: 0.2
+            depositPercentQuantity: 0.7
           )
     }
 
@@ -38,7 +38,7 @@ extension DepositCondition {
         .init(
             title: "Оставлять проценты на вкладе",
             description: "Капитализация",
-            depositPercentQuantity: 0.05
+            depositPercentQuantity: 1.1
         )
     }
 
