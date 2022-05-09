@@ -82,4 +82,27 @@ final class DepositModelTests: XCTestCase {
         XCTAssertEqual(model.getCurrentSelectedConditions(), [.withReplenishCondition])
     }
 
+    func testOnCorrectCalculateAmountAndPercentage() {
+        let model = DepositModel()
+        let amount: Double = 20_000
+        let term: DepositTerm = .nineMounth
+
+        let expectedPercent: Double = 15.12
+        let expectedAmount = amount + amount * (15.12 / 100)
+
+        print(expectedAmount)
+
+        model.setAmount(amount)
+        _ = model.getDisabledConditionsBasedOn(months: term.termInMonth)
+        _ = model.getSelectedConditionsBasedOn(condition: .withWithdrawCondition)
+
+        XCTAssertEqual(model.getDepositPercentBasedOnCurrentConditions(), expectedPercent)
+
+        XCTAssertEqual(model.getTotalAmountBasedOnCurrentConditions(), expectedAmount)
+    }
+
+    func testOnCorrectSumValidation() {
+        
+    }
+
 }

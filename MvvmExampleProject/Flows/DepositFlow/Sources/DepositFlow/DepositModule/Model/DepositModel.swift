@@ -12,6 +12,7 @@ final class DepositModel: DepositModelProtocol {
 
         static let upperSumTreshold: Double = 10_000_000
         static let lowerSumTreshold: Double = 15_000
+        static let percentMagnitude: Double = 100
     }
 
     // MARK: - Private Properties
@@ -40,7 +41,7 @@ final class DepositModel: DepositModelProtocol {
     }
 
     func getTotalAmountBasedOnCurrentConditions() -> Double {
-        currentSum + currentSum * getDepositPercentBasedOnCurrentConditions()
+        currentSum + currentSum * (getDepositPercentBasedOnCurrentConditions() / Constants.percentMagnitude)
     }
 
     func getSelectedConditionsBasedOn(condition: DepositCondition) -> Set<DepositCondition> {
