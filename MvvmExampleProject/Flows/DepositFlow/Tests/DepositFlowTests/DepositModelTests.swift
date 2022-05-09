@@ -102,7 +102,22 @@ final class DepositModelTests: XCTestCase {
     }
 
     func testOnCorrectSumValidation() {
-        
+        let model = DepositModel()
+        let invalidUpperAmount: Double = 10_000_000
+        let invalidLowerAmount: Double = 10_000
+        let correntAmount: Double = 20_000
+
+        model.setAmount(invalidUpperAmount)
+
+        XCTAssertEqual(model.getAmountValidationResult().isValid, false)
+
+        model.setAmount(invalidLowerAmount)
+
+        XCTAssertEqual(model.getAmountValidationResult().isValid, false)
+
+        model.setAmount(correntAmount)
+
+        XCTAssertEqual(model.getAmountValidationResult().isValid, true)
     }
 
 }
