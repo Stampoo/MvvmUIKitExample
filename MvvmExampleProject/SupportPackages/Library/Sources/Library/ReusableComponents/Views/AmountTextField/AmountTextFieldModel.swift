@@ -13,6 +13,13 @@ struct AmountTextFieldModel {
 
     enum Currency: String {
         case rub = "RUB"
+
+        var mark: String {
+            switch self {
+            case .rub:
+                return "₽"
+            }
+        }
     }
 
     let currency: Currency

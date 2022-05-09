@@ -48,6 +48,7 @@ final class AmountTextField: UITextField {
         self.model = model
 
         currencyFormatter.currencyCode = model.currency.rawValue
+        currencyFormatter.currencySymbol = model.currency.mark
         font = model.font
         textColor = model.textColor
     }
@@ -93,6 +94,7 @@ private extension AmountTextField {
 
     func setupInitialState() {
         delegate = self
+        autocorrectionType = .no
         addTarget(
             self,
             action: #selector(valueDidChangedInAmountField(_:)),
@@ -100,6 +102,22 @@ private extension AmountTextField {
         )
 
         configureFormatter()
+        addDoneButtonOnKeyboard()
+    }
+
+    func addDoneButtonOnKeyboard() {
+        let doneToolbar = UIToolbar()
+        doneToolbar.frame.size = CGSize(width: .zero, height: 50)
+        doneToolbar.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        let flexSpace = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
+        let done = UIBarButtonItem(title: "Done", style: .plain, target: self, action: #selector(doneButtonDidPressed))
+        done.tintColor = .black
+        doneToolbar.items = [flexSpace, done]
+        inputAccessoryView = doneToolbar
+    }
+
+    @objc func doneButtonDidPressed() {
+        resignFirstResponder()
     }
 
     func configureFormatter() {
