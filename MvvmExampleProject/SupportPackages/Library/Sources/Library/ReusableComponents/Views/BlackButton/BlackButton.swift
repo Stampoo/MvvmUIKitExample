@@ -20,6 +20,9 @@ public final class BlackButton: UIButton {
     // MARK: - Private Properties
 
     private let tapEventTransceiver = BaseEventTransceiver<Void, Never>()
+    private var pressAnimator = UIViewPropertyAnimator()
+    private var animationDuration: TimeInterval = 0.2
+    private var hasPressAnimationState: Bool = true
 
     // MARK: - Initialization
 
@@ -31,6 +34,18 @@ public final class BlackButton: UIButton {
     required public init?(coder: NSCoder) {
         super.init(coder: coder)
         setupInitialState()
+    }
+
+    // MARK: - UIResponder
+
+    public override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        super.touchesBegan(touches, with: event)
+        startPressAnimation()
+    }
+
+    public override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
+        super.touchesEnded(touches, with: event)
+        startUnpressAnimation()
     }
 
     // MARK: - UIButton
@@ -50,6 +65,7 @@ private extension BlackButton {
     func setupInitialState() {
         addTarget(self, action: #selector(didTapOnButton), for: .touchUpInside)
         setBackgroundImage(.solidColor(.black), for: .normal)
+        setBackgroundImage(.solidColor(.black.withAlphaComponent(0.3)), for: .disabled)
         layer.cornerRadius = 12
         clipsToBounds = true
     }
@@ -57,6 +73,28 @@ private extension BlackButton {
     @objc
     func didTapOnButton() {
         tapEventTransceiver.send(newValue: Void())
+    }
+
+    func startPressAnimation() {
+        guard hasPressAnimationState else {
+            return
+        }
+        self.pressAnimator.stopAnimation(false)
+        self.pressAnimator = UIViewPropertyAnimator(duration: animationDuration, dampingRatio: 5) {
+            self.transform = .init(scaleX: 0.9, y: 0.9)
+        }
+        pressAnimator.startAnimation()
+    }
+
+    func startUnpressAnimation() {
+        guard hasPressAnimationState else {
+            return
+        }
+        self.pressAnimator.stopAnimation(false)
+        self.pressAnimator = UIViewPropertyAnimator(duration: animationDuration, dampingRatio: 5) {
+            self.transform = .identity
+        }
+        self.pressAnimator.startAnimation()
     }
 
 }
