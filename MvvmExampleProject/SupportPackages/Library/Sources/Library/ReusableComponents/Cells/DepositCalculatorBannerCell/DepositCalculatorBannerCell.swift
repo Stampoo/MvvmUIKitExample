@@ -17,6 +17,10 @@ public final class DepositCalculatorBannerCell: UITableViewCell, ConfigurableIte
         let percent: Double
         let amount: Double
 
+        fileprivate var percentForFormatter: Double {
+            percent / 100
+        }
+
         public init(percent: Double, amount: Double) {
             self.percent = percent
             self.amount = amount
@@ -45,7 +49,7 @@ public final class DepositCalculatorBannerCell: UITableViewCell, ConfigurableIte
     // MARK: - ConfigurableItem
 
     public func configure(with model: Model) {
-        percentLabel.text = percentFormatter.string(from: NSNumber(value: model.percent))
+        percentLabel.text = percentFormatter.string(from: NSNumber(value: model.percentForFormatter))
         amountLabel.text = amountFormatter.string(from: NSNumber(value: model.amount))
     }
 
@@ -102,6 +106,7 @@ private extension DepositCalculatorBannerCell {
     func configurePercentFormatter() {
         percentFormatter.locale = .current
         percentFormatter.minimumFractionDigits = .zero
+        percentFormatter.maximumFractionDigits = 3
         percentFormatter.numberStyle = .percent
     }
 

@@ -117,8 +117,8 @@ private extension DepositViewController {
 
     func getDepositInfoBannerCellGenerator() -> TableCellGenerator {
         let model = DepositCalculatorBannerCell.Model(
-            percent: 17.62,
-            amount: 30456.6
+            percent: .zero,
+            amount: .zero
         )
         let depositBannerCellGenerator = BaseNonReusableCellGenerator<DepositCalculatorBannerCell>(
             with: model
