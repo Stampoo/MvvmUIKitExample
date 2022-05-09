@@ -14,11 +14,16 @@ final class DepositModel: DepositModelProtocol {
     // MARK: - Private Properties
 
     var currentSelectedConditions: Set<DepositCondition> = []
+    var currrentDisabledConditions: Set<DepositCondition> = []
 
     // MARK: - DepositModelProtocol
 
     func getCurrentSelectedConditions() -> Set<DepositCondition> {
         currentSelectedConditions
+    }
+
+    func getCurrentDisabledConditions() -> Set<DepositCondition> {
+        currrentDisabledConditions
     }
 
     func getDepositPercentBasedOnCurrentConditions() -> Double {
@@ -40,9 +45,11 @@ final class DepositModel: DepositModelProtocol {
 
     func getDisabledConditionsBasedOn(months: Int) -> Set<DepositCondition> {
         guard months >= Constants.mothsTresholdForDisableConditions else {
+            currrentDisabledConditions = []
             return []
         }
         updateCurrentSelectedConditionsWithDisabled()
+        currrentDisabledConditions = Constants.disabledConditions
         return Constants.disabledConditions
     }
 

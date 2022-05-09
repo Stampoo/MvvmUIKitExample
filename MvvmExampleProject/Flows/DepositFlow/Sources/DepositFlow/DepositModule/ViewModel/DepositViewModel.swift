@@ -70,27 +70,35 @@ final class DepositViewModel: DepositViewOutput, DepositModuleInput, DepositModu
 private extension DepositViewModel {
 
     func updateConditions(dependOn months: Int) {
+        let selectedConditions = model.getCurrentSelectedConditions()
         let disabledConditions = model.getDisabledConditionsBasedOn(months: months)
         let newConditions: [DepositCondition] = availableDepositConditions.map { condition in
-            guard disabledConditions.contains(condition) else {
-                return condition
+            var transformedCondition = condition
+            if selectedConditions.contains(condition) {
+                transformedCondition.isSelected = true
             }
-            var condition = condition
-            condition.isDisabled = true
-            return condition
+            guard disabledConditions.contains(condition) else {
+                return transformedCondition
+            }
+            transformedCondition.isDisabled = true
+            return transformedCondition
         }
         depositConditionsTransceiver.send(newValue: newConditions)
     }
 
     func updateConditions(dependOn selectedCondition: DepositCondition) {
         let selectedConditions = model.getSelectedConditionsBasedOn(condition: selectedCondition)
+        let disabledConditions = model.getCurrentDisabledConditions()
         let newConditions: [DepositCondition] = availableDepositConditions.map { condition in
-            guard selectedConditions.contains(condition) else {
-                return condition
+            var transformedCondition = condition
+            if disabledConditions.contains(condition) {
+                transformedCondition.isDisabled = true
             }
-            var condition = condition
-            condition.isSelected = true
-            return condition
+            guard selectedConditions.contains(condition) else {
+                return transformedCondition
+            }
+            transformedCondition.isSelected = true
+            return transformedCondition
         }
         depositConditionsTransceiver.send(newValue: newConditions)
     }

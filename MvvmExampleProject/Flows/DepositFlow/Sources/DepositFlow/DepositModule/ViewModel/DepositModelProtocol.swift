@@ -10,6 +10,7 @@ import Foundation
 protocol DepositModelProtocol {
 
     func getCurrentSelectedConditions() -> Set<DepositCondition>
+    func getCurrentDisabledConditions() -> Set<DepositCondition>
     func getDepositPercentBasedOnCurrentConditions() -> Double
     func getTotalAmountBasedOnCurrentConditions() -> Double
     func getSelectedConditionsBasedOn(condition: DepositCondition) -> Set<DepositCondition>
