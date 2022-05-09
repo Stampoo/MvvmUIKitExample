@@ -12,6 +12,10 @@ final class DepositModel: DepositModelProtocol {
 
         static let upperSumTreshold: Double = 10_000_000
         static let lowerSumTreshold: Double = 15_000
+
+        static let upperSumText = "до 10 000 000 ₽"
+        static let lowerSumText = "от 15 000 ₽"
+
         static let percentMagnitude: Double = 100
     }
 
@@ -76,9 +80,9 @@ final class DepositModel: DepositModelProtocol {
         let isNotSmallerThanLower = currentSum > Constants.lowerSumTreshold
         let isNotMoreThanUpper = currentSum < Constants.upperSumTreshold
         return Validation(isNotSmallerThanLower && isNotMoreThanUpper)
-            .replaceSuccessDescription(with: "от \(Int(Constants.lowerSumTreshold))")
+            .replaceSuccessDescription(with: Constants.lowerSumText)
             .replaceFailureDescription(
-                with: isNotSmallerThanLower ? "до \(Int(Constants.upperSumTreshold))" : "от \(Int(Constants.lowerSumTreshold))"
+                with: isNotSmallerThanLower ? Constants.upperSumText : Constants.lowerSumText
             )
     }
 
