@@ -65,7 +65,7 @@ private extension BlackButton {
     func setupInitialState() {
         addTarget(self, action: #selector(didTapOnButton), for: .touchUpInside)
         setBackgroundImage(.solidColor(.black), for: .normal)
-        setBackgroundImage(.solidColor(.black.withAlphaComponent(0.3)), for: .disabled)
+        setBackgroundImage(.solidColor(.darkGray), for: .disabled)
         layer.cornerRadius = 12
         clipsToBounds = true
     }
