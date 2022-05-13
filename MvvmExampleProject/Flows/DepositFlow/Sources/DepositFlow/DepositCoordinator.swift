@@ -6,6 +6,7 @@
 //
 
 import Core
+import Library
 
 public final class DepositCoordinator: BaseCoordinator {
 
@@ -40,7 +41,10 @@ private extension DepositCoordinator {
             self?.router.dismissTopPresentedModule(isAnimated: true)
         }
 
-        router.present(view.fullscreenPresentableController, isAnimated: true)
+        //router.present(view.fullscreenPresentableController, isAnimated: true)
+        let controller = PopUpContainerController(content: DepositConditionView.loadFromNibDirectly())
+        controller
+        router.present(controller, isAnimated: true)
     }
 
 }
