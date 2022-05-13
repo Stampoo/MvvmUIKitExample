@@ -10,7 +10,7 @@ import Core
 import Combine
 import Resources
 
-final class DepositConditionView: UIView {
+public final class DepositConditionView: UIView {
 
     // MARK: - Nested Types
 
@@ -38,12 +38,12 @@ final class DepositConditionView: UIView {
 
     // MARK: - UITableViewCell
 
-    override func awakeFromNib() {
+    override public func awakeFromNib() {
         super.awakeFromNib()
         setupInitialState()
     }
 
-    override func layoutSubviews() {
+    override public func layoutSubviews() {
         super.layoutSubviews()
         checkBoxContainer.layer.cornerRadius = checkBoxContainer.frame.height / 2
     }
@@ -74,7 +74,7 @@ final class DepositConditionView: UIView {
         setState(state)
     }
 
-    static func loadFromNibDirectly() -> Self {
+    public static func loadFromNibDirectly() -> Self {
         let nibName = String(describing: self)
         let nib = UINib(nibName: nibName, bundle: .module)
 
@@ -151,6 +151,19 @@ private extension DepositConditionView {
     func configureDescriptionLabel() {
         descriptionLabel.textColor = .systemGray
         descriptionLabel.font = .systemFont(ofSize: 14)
+    }
+
+}
+
+
+extension DepositConditionView: PopUpContentProtocol {
+
+    public var asViewRepresentable: UIView {
+        self
+    }
+
+    public var estimateHeight: CGFloat {
+        frame.height
     }
 
 }
