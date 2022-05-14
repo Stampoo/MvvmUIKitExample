@@ -13,6 +13,10 @@ final class InteractiveTransitionBridge: UIPercentDrivenInteractiveTransition, I
 
     private weak var presentedController: UIViewController?
     private var panRecognizer: UIPanGestureRecognizer?
+    private var latestGesturePanLocation: CGPoint = .zero
+    private var tresholdNecessaryForClosing: CGFloat {
+        (presentedController?.view.frame.height ?? .zero) / 2
+    }
 
     // MARK: - UIPercentDrivenInteractiveTransition
 
@@ -34,7 +38,10 @@ final class InteractiveTransitionBridge: UIPercentDrivenInteractiveTransition, I
     func bind(to controller: UIViewController) {
         presentedController = controller
 
-        let panRecognizer = UIPanGestureRecognizer(target: self, action: #selector(handle(recognizer:)))
+        let panRecognizer = UIPanGestureRecognizer(
+            target: self,
+            action: #selector(onPresentedViewDidPanned(recognizer:))
+        )
         presentedController?.view.addGestureRecognizer(panRecognizer)
 
         self.panRecognizer = panRecognizer
@@ -42,26 +49,27 @@ final class InteractiveTransitionBridge: UIPercentDrivenInteractiveTransition, I
 
 }
 
-// MARK: - Gesture Handling
+// MARK: - Private Methods
 
-extension InteractiveTransitionBridge {
+private extension InteractiveTransitionBridge {
 
     @objc
-    func handle(recognizer: UIPanGestureRecognizer) {
-        direction == .present
-            ? handlePresentation(recognizer: recognizer)
-            : handleDismiss(recognizer: recognizer)
+    func onPresentedViewDidPanned(recognizer: UIPanGestureRecognizer) {
+        guard case .dismiss = direction else {
+            return
+        }
+        handleAndDismissIfNeeded(recognizer: recognizer)
     }
 
-    func handlePresentation(recognizer: UIPanGestureRecognizer) {
+    func handleAndDismissIfNeeded(recognizer: UIPanGestureRecognizer) {
+        let touchLocation = recognizer.location(in: presentedController?.view)
         switch recognizer.state {
         case .began:
-            pause()
+            applyChangesAfterGestureDidBegan(currentTouchLocation: touchLocation)
         case .changed:
-            let increment = -recognizer.incrementToBottom(maxTranslation: maxTranslation)
-            update(percentComplete + increment)
+            applyChangesAfterGestureDidChanged(recognizer: recognizer)
         case .ended, .cancelled:
-            recognizer.isProjectedToDownHalf(maxTranslation: maxTranslation) ? cancel() : finish()
+            applyChangesAfterGestureDidEnded(currentYTouchLocation: touchLocation.y)
         case .failed:
             cancel()
         default:
@@ -69,79 +77,33 @@ extension InteractiveTransitionBridge {
         }
     }
 
-    func handleDismiss(recognizer: UIPanGestureRecognizer) {
-        switch recognizer.state {
-        case .began:
-            pause() // Pause allows to detect isRunning
-            if !isRunning {
-                presentedController?.dismiss(animated: true) // Start the new one
-            }
-        case .changed:
-            update(percentComplete + recognizer.incrementToBottom(maxTranslation: maxTranslation))
-        case .ended, .cancelled:
-            recognizer.isProjectedToDownHalf(maxTranslation: maxTranslation) ? finish() : cancel()
-        case .failed:
-            cancel()
-        default:
-            break
+    func applyChangesAfterGestureDidBegan(currentTouchLocation: CGPoint) {
+        latestGesturePanLocation = currentTouchLocation
+        pause()
+        if percentComplete == 0 {
+            presentedController?.dismiss(animated: true)
         }
     }
 
-    var maxTranslation: CGFloat {
-        return presentedController?.view.frame.height ?? 0
+    func applyChangesAfterGestureDidChanged(recognizer: UIPanGestureRecognizer) {
+        update(percentComplete + getIncreasedYTranslation(for: recognizer))
+        recognizer.setTranslation(.zero, in: nil)
     }
 
-    /// `pause()` before call `isRunning`
-    private var isRunning: Bool {
-        return percentComplete != 0
+    func applyChangesAfterGestureDidEnded(currentYTouchLocation: CGFloat) {
+        let offsetY = latestGesturePanLocation.y - currentYTouchLocation
+        offsetY > tresholdNecessaryForClosing ? cancel() : finish()
     }
+
 }
 
-// MARK: - Extensions
+// MARK: - Calculate translation measurement
 
-extension CGFloat { // Velocity value
-    func projectedOffset(decelerationRate: UIScrollView.DecelerationRate) -> CGFloat {
-        // Magic formula from WWDC
-        let multiplier = 1 / (1 - decelerationRate.rawValue) / 1000
-        return self * multiplier
-    }
-}
+private extension InteractiveTransitionBridge {
 
-extension CGPoint {
-    func projectedOffset(decelerationRate: UIScrollView.DecelerationRate) -> CGPoint {
-        return CGPoint(x: x.projectedOffset(decelerationRate: decelerationRate),
-                       y: y.projectedOffset(decelerationRate: decelerationRate))
-    }
-}
-
-extension CGPoint {
-    static func +(left: CGPoint, right: CGPoint) -> CGPoint {
-        return CGPoint(x: left.x + right.x,
-                       y: left.y + right.y)
-    }
-}
-
-extension UIPanGestureRecognizer {
-    func projectedLocation(decelerationRate: UIScrollView.DecelerationRate) -> CGPoint {
-        let velocityOffset = velocity(in: view).projectedOffset(decelerationRate: .normal)
-        let projectedLocation = location(in: view!) + velocityOffset
-        return projectedLocation
-    }
-}
-
-extension UIPanGestureRecognizer {
-    func isProjectedToDownHalf(maxTranslation: CGFloat) -> Bool {
-        let endLocation = projectedLocation(decelerationRate: .fast)
-        let isPresentationCompleted = endLocation.y > maxTranslation / 2
-
-        return isPresentationCompleted
+    func getIncreasedYTranslation(for recognizer: UIPanGestureRecognizer) -> CGFloat {
+        let currentTranslationOnY = recognizer.translation(in: presentedController?.view).y
+        return currentTranslationOnY / (presentedController?.view.frame.height ?? 0)
     }
 
-    func incrementToBottom(maxTranslation: CGFloat) -> CGFloat {
-        let translation = self.translation(in: view).y
-        setTranslation(.zero, in: nil)
-
-        let percentIncrement = translation / maxTranslation
-        return percentIncrement
-    }
 }
