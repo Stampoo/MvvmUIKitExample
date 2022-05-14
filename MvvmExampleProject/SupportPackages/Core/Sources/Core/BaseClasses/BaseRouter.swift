@@ -35,6 +35,10 @@ public final class BaseRouter: Router {
         topViewController()?.dismiss(animated: isAnimated, completion: nil)
     }
 
+    public func dismissTopPresentedModule(isAnimated: Bool, _ completion: @escaping () -> Void) {
+        topViewController()?.dismiss(animated: isAnimated, completion: completion)
+    }
+
     public func setNavigationControllerRootModule(_ module: RouterPresentableElement,
                                                   isAnimated: Bool,
                                                   isNeedHideBar: Bool) {

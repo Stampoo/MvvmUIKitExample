@@ -11,6 +11,7 @@ public protocol Router {
 
     func present(_ module: RouterPresentableElement, isAnimated: Bool)
     func dismissTopPresentedModule(isAnimated: Bool)
+    func dismissTopPresentedModule(isAnimated: Bool, _ completion: @escaping () -> Void)
 
     func push(_ module: RouterPresentableElement, isAnimated: Bool)
     func popModule(isAnimated: Bool)

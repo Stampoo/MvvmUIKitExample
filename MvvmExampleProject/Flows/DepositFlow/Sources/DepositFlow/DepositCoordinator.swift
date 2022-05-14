@@ -38,14 +38,29 @@ private extension DepositCoordinator {
         let (view, output) = SuccessPageModuleConfigurator.configure()
         
         output.onCloseDidTriggered = { [weak self] in
+            self?.router.dismissTopPresentedModule(isAnimated: true) {
+                self?.showTestPopUp()
+            }
+        }
+        router.present(view.fullscreenPresentableController, isAnimated: true)
+
+    }
+
+    func showTestPopUp() {
+        let contentView: AnotherViewForTesting = .loadFromNibDirectly()
+        contentView.onClose = { [weak self] in
             self?.router.dismissTopPresentedModule(isAnimated: true)
         }
-
-        //router.present(view.fullscreenPresentableController, isAnimated: true)
+        contentView.onOpen = { [weak self] in
+            self?.router.dismissTopPresentedModule(isAnimated: true)
+        }
         let popUpConfigurator = PopUpConfigurator(
-            content: AnotherViewForTesting.loadFromNibDirectly()
+            content: contentView
         )
-        router.present(popUpConfigurator.getPreparedToPresentationContainer(), isAnimated: true)
+        router.present(
+            popUpConfigurator.getPreparedToPresentationContainer(),
+            isAnimated: true
+        )
     }
 
 }

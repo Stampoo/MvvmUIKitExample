@@ -200,9 +200,9 @@ private extension DepositViewController {
                 viewModel?.didEventTriggered(.openDepositDidPressed)
             }
             .store(in: &cancellableEventsContainer)
-//        viewModel?.openDepositPossibilityPublisher
-//            .assign(to: \.isEnabled, on: openDepositButton)
-//            .store(in: &cancellableEventsContainer)
+        viewModel?.openDepositPossibilityPublisher
+            .assign(to: \.isEnabled, on: openDepositButton)
+            .store(in: &cancellableEventsContainer)
         NSLayoutConstraint.activate([
             openDepositButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -16),
             openDepositButton.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor, constant: 20),
