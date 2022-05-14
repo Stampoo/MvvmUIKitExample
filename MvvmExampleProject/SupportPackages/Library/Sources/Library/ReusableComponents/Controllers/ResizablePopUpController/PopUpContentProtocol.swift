@@ -16,7 +16,11 @@ public protocol PopUpContentProtocol {
 
 }
 
-public extension PopUpContentProtocol {
+public extension PopUpContentProtocol where Self: UIView{
+
+    var asViewRepresentable: UIView {
+        self
+    }
 
     var estimateHeight: CGFloat {
         asViewRepresentable.frame.height

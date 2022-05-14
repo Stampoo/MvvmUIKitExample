@@ -34,8 +34,10 @@ final class InteractiveTransitionBridge: UIPercentDrivenInteractiveTransition, I
     func bind(to controller: UIViewController) {
         presentedController = controller
 
-        panRecognizer = UIPanGestureRecognizer(target: self, action: #selector(handle(recognizer:)))
-        presentedController?.view.addGestureRecognizer(panRecognizer!)
+        let panRecognizer = UIPanGestureRecognizer(target: self, action: #selector(handle(recognizer:)))
+        presentedController?.view.addGestureRecognizer(panRecognizer)
+
+        self.panRecognizer = panRecognizer
     }
 
 }

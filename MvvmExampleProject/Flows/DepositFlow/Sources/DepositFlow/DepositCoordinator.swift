@@ -42,7 +42,9 @@ private extension DepositCoordinator {
         }
 
         //router.present(view.fullscreenPresentableController, isAnimated: true)
-        let popUpConfigurator = PopUpConfigurator(content: DepositConditionView.loadFromNibDirectly())
+        let popUpConfigurator = PopUpConfigurator(
+            content: AnotherViewForTesting.loadFromNibDirectly()
+        )
         router.present(popUpConfigurator.getPreparedToPresentationContainer(), isAnimated: true)
     }
 
